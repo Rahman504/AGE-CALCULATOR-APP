@@ -1,0 +1,115 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+}
+img {
+  background-color: hsl(259, 100%, 65%);
+  padding: 15px;
+  border-radius: 50%;
+  width: 10%;
+}
+img:hover {
+    background-color: hsl(0, 0%, 8%);
+    cursor: pointer;
+}
+body {
+    background-color: hsl(0, 0%, 86%);
+}
+section.all {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    background-color: hsl(0, 0%, 100%);
+    width: 60%;
+    padding: 40px;
+    border-radius: 15px;
+    border-bottom-right-radius: 170px;
+}
+div.head {
+    display: flex;
+}
+div.head article {
+    width: 20%;
+    margin-right: 25px;
+}
+div.head article > p {
+    color: hsl(0, 1%, 44%);
+    font-size: .7rem;
+    margin-bottom: 5px;
+}
+div.head article input {
+    width: 100%;
+    font-size: 1.5rem;
+    margin-right: 0px;
+    padding: 10px 0px;
+    padding-left: 17px;
+    outline: none;
+    border: 1px solid hsl(0, 0%, 86%);
+    border-radius: 5px;
+    color: hsl(0, 0%, 8%);
+    margin-bottom: 8px;
+}
+div.head article p:nth-child(3) {
+    color: hsl(0, 100%, 67%);
+    font-style: italic;
+}
+div.head article input:hover {
+    cursor: pointer;
+}
+div.head article input:focus {
+    border: 1px solid hsl(259, 100%, 65%);
+}
+div.head article input::-webkit-inner-spin-button {
+    display: none;
+}
+hr {
+    flex: 1;
+    border: none;
+    background-color: hsl(0, 0%, 86%);
+    height: 0.5px;
+}
+div.arrow {
+    display: flex;
+    align-items: center;
+}
+div article.general span {
+    font-size: 4rem;
+    font-weight: 700;
+    font-style: italic;
+}
+div article.general span:nth-child(1) {
+    color: hsl(259, 100%, 65%);
+} 
+
+@media screen and (max-width: 800px) {
+    section.all {
+        width: 90%;
+        padding: 40px 20px;
+    }
+    div.head {
+        justify-content: space-between;
+    }
+    div.head article {
+        width: 30%;
+        margin-right: unset;
+        margin-bottom: 20px;
+    }
+    div.arrow {
+        position: relative;
+        margin-top: 50px;
+        margin-bottom: 60px;
+    }
+    img {
+        width: 15%;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        justify-content: center;
+    }
+    div article.general span {
+        font-size: 3.2rem;
+    }
+}

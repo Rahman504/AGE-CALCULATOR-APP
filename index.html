@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,700;1,400;1,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>Frontend Mentor | Age calculator app</title>
+  
+</head>
+<body>
+  <section class="all">
+    <div class="head" id="form">
+      <article>
+        <p>DAY</p>
+        <input type="number" placeholder="DD" id="day" required>
+        <p class="errorDay"></p>
+      </article>
+      <article>
+        <p>MONTH</p>
+        <input type="number" placeholder="MM" id="month" required>
+        <p class="errorMonth"></p>
+      </article>
+      <article>
+        <p>YEAR</p>
+        <input type="number" placeholder="YYYY" id="year" required>
+        <p class="errorYear"></p>
+      </article>
+    </div>
+    <div class="arrow">
+      <hr>
+      <img src="assets/images/icon-arrow.svg" alt="icon-arrow" class="submit">
+    </div>
+    <div>
+      <article class="years general">
+        <span id="numYears">--</span>
+        <span>years</span>
+      </article>
+      <article class="months general">
+        <span id="numMonths">--</span>
+        <span>months</span>
+      </article>
+      <article class="days general">
+        <span id="numDays">--</span>
+        <span>days</span>
+      </article>
+    </div>
+  </section>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const errorDay = document.getElementsByClassName("errorDay")[0];
+    const errorMonth = document.getElementsByClassName("errorMonth")[0];
+    const errorYear = document.getElementsByClassName("errorYear")[0];
+
+    const numYears = document.getElementById("numYears");
+    const numMonths = document.getElementById("numMonths");
+    const numDays = document.getElementById("numDays");
+
+    const arrow = document.querySelector(".submit");
+    arrow.onclick = function(event) {
+        event.preventDefault();
+
+        const dayInput = document.getElementById("day").value;
+        const monthInput = document.getElementById("month").value;
+        const yearInput = document.getElementById("year").value;
+
+        let hasError = false;
+        errorYear.innerText = "";
+        errorMonth.innerText = "";
+        errorDay.innerText = "";
+
+        if (!yearInput) {
+            errorYear.innerText = "This field is required";
+            hasError = true;
+        }
+        if (!monthInput) {
+            errorMonth.innerText = "This field is required";
+            hasError = true;
+        }
+        if (!dayInput) {
+            errorDay.innerText = "This field is required";
+            hasError = true;
+        }
+
+        if (hasError) {
+            return;
+        }
+
+        const year = parseInt(yearInput, 10);
+        const month = parseInt(monthInput, 10);
+        const day = parseInt(dayInput, 10);
+
+        if (month < 1 || month > 12) {
+            errorMonth.innerText = 'Must be a valid month';
+            hasError = true;
+        }
+
+        if (day < 1 || day > 31) {
+            errorDay.innerText = 'Must be a valid day';
+            hasError = true;
+        }
+
+        if (!isValidDate(year, month, day)) {
+            errorDay.innerText = 'Must be a valid day';
+            hasError = true;
+        }
+
+        if (hasError) {
+            return;
+        }
+
+        const birthdate = new Date(year, month - 1, day);
+        const today = new Date();
+
+        if (birthdate > today) {
+            errorYear.innerText = 'Must be in the past';
+            return;
+        }
+
+        const age = calculateAge(birthdate, today);
+        animateResult(age.years, age.months, age.days);
+    };
+
+    function isValidDate(year, month, day) {
+        const date = new Date(year, month - 1, day);
+        return date.getFullYear() === year && date.getMonth() === (month - 1) && date.getDate() === day;
+    }
+
+    function calculateAge(birthdate, today) {
+        let years = today.getFullYear() - birthdate.getFullYear();
+        let months = today.getMonth() - birthdate.getMonth();
+        let days = today.getDate() - birthdate.getDate();
+
+        if (days < 0) {
+            months--;
+            days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+        }
+
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+
+        return { years, months, days };
+    }
+
+    function animateResult(years, months, days) {
+        const duration = 1000;
+        const startTime = performance.now();
+        let start = {years: 0, months: 0, days: 0};
+        const end = {years, months, days};
+
+        function animate(time) {
+            const elapsedTime = time - startTime;
+            const progress = Math.min(elapsedTime / duration, 1);
+
+            const current = {
+                years: Math.round(start.years + (end.years - start.years) * progress),
+                months: Math.round(start.months + (end.months - start.months) * progress),
+                days: Math.round(start.days + (end.days - start.days) * progress)
+            };
+
+            numYears.textContent = current.years;
+            numMonths.textContent = current.months;
+            numDays.textContent = current.days;
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        }
+
+        requestAnimationFrame(animate);
+    }
+});
+
+</script>
+</body>
+</html>
